@@ -3,27 +3,15 @@ package com.alexandredev.financaskotlin.model
 import java.math.BigDecimal
 
 class Resumo(private val transacoes: List<Transacao>) {
-    fun receita(): BigDecimal {
-        var totalReceita = BigDecimal.ZERO
-        for (transacao in transacoes) {
-            if (transacao.tipo == Tipo.RECEITA) {
-                totalReceita = totalReceita.plus(transacao.valor)
-            }
-        }
-        return totalReceita
-    }
+    val receita get() = somarPor(Tipo.RECEITA)
 
-    fun despesa(): BigDecimal {
-        var totalDespesa = BigDecimal.ZERO
-        for (transacao in transacoes) {
-            if (transacao.tipo == Tipo.DESPESA) {
-                totalDespesa = totalDespesa.plus(transacao.valor)
-            }
-        }
-        return totalDespesa
-    }
+    val despesa get() = somarPor(Tipo.DESPESA)
 
-    fun total(): BigDecimal {
-        return receita().subtract(despesa());
+    val total get() = receita.subtract(despesa)
+
+    private fun somarPor(tipo: Tipo): BigDecimal {
+        val somaDeTransacoesPeloTipo = transacoes.filter { it.tipo == tipo }
+            .sumByDouble { it.valor.toDouble() }
+        return BigDecimal(somaDeTransacoesPeloTipo)
     }
 }
