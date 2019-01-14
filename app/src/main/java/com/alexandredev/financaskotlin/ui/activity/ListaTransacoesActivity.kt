@@ -17,13 +17,17 @@ import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 class ListaTransacoesActivity : AppCompatActivity() {
 
     private var transacoes: MutableList<Transacao> = mutableListOf()
-    private var viewDaActivity: View? = null
+    private val viewDaActivity: View by lazy {
+        window.decorView
+    }
+
+    private val viewGroupDaActivity: ViewGroup by lazy {
+        viewDaActivity as ViewGroup
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
-
-        viewDaActivity = window.decorView
 
         configuraResumo()
         configuraLista()
@@ -41,7 +45,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun chamaDialogAdicao(tipo: Tipo) {
-        AdicionaTransacaoDialog(this, viewDaActivity as ViewGroup)
+        AdicionaTransacaoDialog(this, viewGroupDaActivity)
             .chama(tipo, object : TransacaoDelegate {
                 override fun delegate(transacao: Transacao) {
                     adiciona(transacao)
@@ -77,7 +81,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun chamaDialogAlteracao(transacao: Transacao, position: Int) {
-        AlteraTransacaoDialog(this, viewDaActivity as ViewGroup)
+        AlteraTransacaoDialog(this, viewGroupDaActivity)
             .chama(transacao, object : TransacaoDelegate {
                 override fun delegate(transacao: Transacao) {
                     altera(transacao, position)
