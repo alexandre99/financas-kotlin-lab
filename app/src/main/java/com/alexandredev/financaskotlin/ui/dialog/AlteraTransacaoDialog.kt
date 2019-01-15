@@ -1,22 +1,11 @@
 package com.alexandredev.financaskotlin.ui.dialog
 
-import android.app.DatePickerDialog
 import android.content.Context
-import android.support.v7.app.AlertDialog
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.alexandredev.financaskotlin.R
-import com.alexandredev.financaskotlin.delegate.TransacaoDelegate
-import com.alexandredev.financaskotlin.extension.converteParaCalendar
 import com.alexandredev.financaskotlin.extension.formataParaBrasileiro
 import com.alexandredev.financaskotlin.model.Tipo
 import com.alexandredev.financaskotlin.model.Transacao
-import kotlinx.android.synthetic.main.form_transacao.view.*
-import java.math.BigDecimal
-import java.util.*
 
 class AlteraTransacaoDialog(
     private val context: Context,
@@ -34,10 +23,10 @@ class AlteraTransacaoDialog(
         }
     }
 
-    fun chama(transacao: Transacao, transacaoDelegate: TransacaoDelegate) {
+    fun chama(transacao: Transacao, delegate: (transacao: Transacao) -> Unit) {
         val tipo = transacao.tipo
 
-        chama(tipo, transacaoDelegate);
+        chama(tipo, delegate);
 
         inicializaCampos(transacao, tipo)
     }

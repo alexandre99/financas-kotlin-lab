@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import com.alexandredev.financaskotlin.R
-import com.alexandredev.financaskotlin.delegate.TransacaoDelegate
 import com.alexandredev.financaskotlin.model.Tipo
 import com.alexandredev.financaskotlin.model.Transacao
 import com.alexandredev.financaskotlin.ui.ResumoView
@@ -46,12 +45,10 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private fun chamaDialogAdicao(tipo: Tipo) {
         AdicionaTransacaoDialog(this, viewGroupDaActivity)
-            .chama(tipo, object : TransacaoDelegate {
-                override fun delegate(transacao: Transacao) {
-                    adiciona(transacao)
-                    lista_transacoes_adiciona_menu.close(true)
-                }
-            })
+            .chama(tipo) {
+                adiciona(it)
+                lista_transacoes_adiciona_menu.close(true)
+            }
     }
 
     private fun adiciona(transacao: Transacao) {
@@ -82,11 +79,9 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private fun chamaDialogAlteracao(transacao: Transacao, position: Int) {
         AlteraTransacaoDialog(this, viewGroupDaActivity)
-            .chama(transacao, object : TransacaoDelegate {
-                override fun delegate(transacao: Transacao) {
-                    altera(transacao, position)
-                }
-            })
+            .chama(transacao) {
+                altera(it, position)
+            }
     }
 
     private fun altera(transacao: Transacao, posicao: Int) {
